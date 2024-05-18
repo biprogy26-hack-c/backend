@@ -30,21 +30,21 @@ def get_db():
 def create_gift(gift: schemas.GiftCreate, db: Session = Depends(get_db)):
     return crud.create_gift(db=db, gift=gift)
 
-@app.get("/gifts/{user_id}", response_model=schemas.Gift)
+@app.get("/gifts/get/{user_id}", response_model=schemas.Gift)
 def read_gift(user_id: int, db: Session = Depends(get_db)):
     db_gift = crud.get_gift(db, user_id=user_id)
     if db_gift is None:
         raise HTTPException(status_code=404, detail="Gift not found")
     return db_gift
 
-@app.put("/gifts/{user_id}", response_model=schemas.Gift)
+@app.put("/gifts/update/{user_id}", response_model=schemas.Gift)
 def update_gift(user_id: int, gift: schemas.GiftUpdate, db: Session = Depends(get_db)):
     db_gift = crud.update_gift(db=db, user_id=user_id, gift=gift)
     if db_gift is None:
         raise HTTPException(status_code=404, detail="Gift not found")
     return db_gift
 
-@app.delete("/gifts/{user_id}", response_model=schemas.Gift)
+@app.delete("/gifts/delete/{user_id}", response_model=schemas.Gift)
 def delete_gift(user_id: int, db: Session = Depends(get_db)):
     db_gift = crud.delete_gift(db=db, user_id=user_id)
     if db_gift is None:
@@ -55,23 +55,23 @@ def delete_gift(user_id: int, db: Session = Depends(get_db)):
 def create_member(member: schemas.MemberCreate, db: Session = Depends(get_db)):
     return crud.create_member(db=db, member=member)
 
-@app.get("/members/{user_id}", response_model=schemas.Member)
+@app.get("/members/get/{user_id}", response_model=schemas.Member)
 def read_member(user_id: int, db: Session = Depends(get_db)):
     db_member = crud.get_member(db, user_id=user_id)
     if db_member is None:
         raise HTTPException(status_code=404, detail="Member not found")
     return db_member
 
-@app.put("/gifts/{user_id}", response_model=schemas.Gift)
-def update_gift(user_id: int, gift: schemas.GiftUpdate, db: Session = Depends(get_db)):
-    db_gift = crud.update_gift(db=db, user_id=user_id, gift=gift)
-    if db_gift is None:
-        raise HTTPException(status_code=404, detail="Gift not found")
-    return db_gift
+@app.put("/members/update/{user_id}", response_model=schemas.Member)
+def update_member(user_id: int, member: schemas.MemberUpdate, db: Session = Depends(get_db)):
+    db_member = crud.update_member(db=db, user_id=user_id, member=member)
+    if db_member is None:
+        raise HTTPException(status_code=404, detail="Member not found")
+    return db_member
 
-@app.delete("/gifts/{user_id}", response_model=schemas.Gift)
-def delete_gift(user_id: int, db: Session = Depends(get_db)):
-    db_gift = crud.delete_gift(db=db, user_id=user_id)
-    if db_gift is None:
-        raise HTTPException(status_code=404, detail="Gift not found")
-    return db_gift
+@app.delete("/members/delete/{user_id}", response_model=schemas.Member)
+def delete_member(user_id: int, db: Session = Depends(get_db)):
+    db_member = crud.delete_member(db=db, user_id=user_id)
+    if db_member is None:
+        raise HTTPException(status_code=404, detail="Member not found")
+    return db_member
