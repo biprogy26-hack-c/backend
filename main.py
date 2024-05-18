@@ -1,11 +1,22 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 import crud, models, schemas
+from fastapi.middleware.cors import CORSMiddleware
 from database import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+# CORSを全て許可する設定
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # Dependency
 def get_db():
@@ -26,6 +37,20 @@ def read_gift(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Gift not found")
     return db_gift
 
+@app.put("/gifts/{user_id}", response_model=schemas.Gift)
+def update_gift(user_id: int, gift: schemas.GiftUpdate, db: Session = Depends(get_db)):
+    db_gift = crud.update_gift(db=db, user_id=user_id, gift=gift)
+    if db_gift is None:
+        raise HTTPException(status_code=404, detail="Gift not found")
+    return db_gift
+
+@app.delete("/gifts/{user_id}", response_model=schemas.Gift)
+def delete_gift(user_id: int, db: Session = Depends(get_db)):
+    db_gift = crud.delete_gift(db=db, user_id=user_id)
+    if db_gift is None:
+        raise HTTPException(status_code=404, detail="Gift not found")
+    return db_gift
+
 @app.post("/members/", response_model=schemas.Member)
 def create_member(member: schemas.MemberCreate, db: Session = Depends(get_db)):
     return crud.create_member(db=db, member=member)
@@ -36,3 +61,17 @@ def read_member(user_id: int, db: Session = Depends(get_db)):
     if db_member is None:
         raise HTTPException(status_code=404, detail="Member not found")
     return db_member
+
+@app.put("/gifts/{user_id}", response_model=schemas.Gift)
+def update_gift(user_id: int, gift: schemas.GiftUpdate, db: Session = Depends(get_db)):
+    db_gift = crud.update_gift(db=db, user_id=user_id, gift=gift)
+    if db_gift is None:
+        raise HTTPException(status_code=404, detail="Gift not found")
+    return db_gift
+
+@app.delete("/gifts/{user_id}", response_model=schemas.Gift)
+def delete_gift(user_id: int, db: Session = Depends(get_db)):
+    db_gift = crud.delete_gift(db=db, user_id=user_id)
+    if db_gift is None:
+        raise HTTPException(status_code=404, detail="Gift not found")
+    return db_gift
