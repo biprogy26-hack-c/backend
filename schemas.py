@@ -7,13 +7,13 @@ class GiftBase(BaseModel):
     giftPhoto: str
 
 class GiftCreate(GiftBase):
-    pass
+    userId: str
 
 class GiftUpdate(GiftBase):
     pass
 
 class Gift(GiftBase):
-    userId: int
+    userId: str
 
     class Config:
         orm_mode = True
@@ -27,13 +27,13 @@ class MemberBase(BaseModel):
     meeting: str
 
 class MemberCreate(MemberBase):
-    pass
+    userId: str
 
 class MemberUpdate(MemberBase):
     pass
 
 class Member(MemberBase):
-    userId: int
+    userId: str
 
     class Config:
         orm_mode = True
